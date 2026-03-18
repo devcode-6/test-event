@@ -15,4 +15,15 @@ Route::prefix('v1')->group(function () {
         Route::get('/me', [AuthController::class, 'me']);
         Route::post('/refresh-token', [AuthController::class, 'refreshToken']);
     });
+
+    // Events - public read
+    Route::get('/events', [EventController::class, 'index']);
+    Route::get('/events/{id}', [EventController::class, 'show']);
+
+    // Events - organizer/admin write
+    Route::middleware(['auth:sanctum', 'role:admin,organizer'])->group(function () {
+        Route::post('/events', [EventController::class, 'store']);
+        Route::put('/events/{id}', [EventController::class, 'update']);
+        Route::delete('/events/{id}', [EventController::class, 'destroy']);
+    });
 });

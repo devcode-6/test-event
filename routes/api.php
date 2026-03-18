@@ -26,4 +26,10 @@ Route::prefix('v1')->group(function () {
         Route::put('/events/{id}', [EventController::class, 'update']);
         Route::delete('/events/{id}', [EventController::class, 'destroy']);
     });
+
+    Route::middleware(['auth:sanctum', 'role:admin,organizer'])->group(function () {
+        Route::post('/events/{event_id}/tickets', [TicketController::class, 'store']);
+        Route::put('/tickets/{id}', [TicketController::class, 'update']);
+        Route::delete('/tickets/{id}', [TicketController::class, 'destroy']);
+    });
 });

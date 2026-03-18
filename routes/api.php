@@ -32,4 +32,18 @@ Route::prefix('v1')->group(function () {
         Route::put('/tickets/{id}', [TicketController::class, 'update']);
         Route::delete('/tickets/{id}', [TicketController::class, 'destroy']);
     });
+
+    // Bookings - customer
+    Route::middleware(['auth:sanctum', 'role:customer'])->group(function () {
+        Route::post('/tickets/{ticket}/bookings', [BookingController::class, 'store'])
+            ->middleware('prevent.double.booking');
+        Route::get('/bookings', [BookingController::class, 'index']);
+        Route::put('/bookings/{id}/cancel', [BookingController::class, 'cancel']);
+    });
+
+    // Bookings - admin management
+    Route::middleware(['auth:sanctum', 'role:admin'])->group(function () {
+        Route::get('/admin/bookings', [BookingController::class, 'adminIndex']);
+        Route::put('/admin/bookings/{id}/cancel', [BookingController::class, 'adminCancel']);
+    });
 });

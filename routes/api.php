@@ -46,4 +46,10 @@ Route::prefix('v1')->group(function () {
         Route::get('/admin/bookings', [BookingController::class, 'adminIndex']);
         Route::put('/admin/bookings/{id}/cancel', [BookingController::class, 'adminCancel']);
     });
+
+    // Payments
+    Route::middleware('auth:sanctum')->group(function () {
+        Route::post('/bookings/{bookingId}/payment', [PaymentController::class, 'store']);
+        Route::get('/payments/{id}', [PaymentController::class, 'show']);
+    });
 });
